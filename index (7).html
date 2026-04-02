@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agenda tu sesión — Nuvem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-deep:   #020817;
+      --blue-glow:   #1e5aff;
+      --blue-bright: #4d86ff;
+      --blue-light:  #a8c4ff;
+      --white:       #f0f4ff;
+      --muted:       #7a92c4;
+      --accent:      #5bf0d0;
+    }
+
+    body {
+      background: var(--blue-deep);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      background: rgba(2,8,23,0.95);
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #f0f4ff 0%, #a8c4ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      text-align: center;
+      padding: 48px 24px 32px;
+      background: radial-gradient(ellipse 70% 80% at 50% 0%, rgba(18,64,176,0.25) 0%, transparent 70%);
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(91,240,208,0.25);
+      padding: 5px 14px;
+      border-radius: 100px;
+      background: rgba(91,240,208,0.05);
+      margin-bottom: 20px;
+    }
+
+    .header-badge span {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.6); }
+    }
+
+    .header h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .header h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--blue-bright), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 300;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    /* ── CAL CONTAINER ── */
+    .cal-container {
+      flex: 1;
+      padding: 0 16px 48px;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Cal.com iframe override */
+    .cal-container iframe,
+    .cal-container > div {
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    /* ── OVERLAY de carga (mientras redirige) ── */
+    #redirectOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2,8,23,0.96);
+      z-index: 9999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      text-align: center;
+      padding: 24px;
+    }
+
+    #redirectOverlay.active { display: flex; }
+
+    .spinner {
+      width: 48px; height: 48px;
+      border: 3px solid rgba(30,90,255,0.2);
+      border-top-color: var(--blue-glow);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #redirectOverlay h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+    }
+
+    #redirectOverlay p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 24px;
+      text-align: center;
+      font-size: 0.78rem;
+      color: rgba(122,146,196,0.4);
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Nuvem</div>
+</nav>
+
+<div class="header">
+  <div class="header-badge"><span></span> Solo para negocios listos para crecer</div>
+  <h1>Agenda tu sesión<br /><em>de diagnóstico</em></h1>
+  <p>Elige el día y hora. En la llamada analizamos tu negocio y te decimos exactamente qué está frenando tu crecimiento.</p>
+</div>
+
+<div class="cal-container">
+  <iframe
+    src="https://cal.com/agencia-de-marketing-nuvem-njqbue/llamada-con-director-de-admision-rafael?embed=true&theme=dark&hideEventTypeDetails=false&layout=month_view"
+    width="100%"
+    height="700"
+    frameborder="0"
+    id="cal-embed"
+    style="border-radius:16px;min-height:700px;"
+    allow="camera; microphone; fullscreen"
+  ></iframe>
+</div>
+
+<!-- Overlay de redirección -->
+<div id="redirectOverlay">
+  <div class="spinner"></div>
+  <h2>¡Reunión confirmada! 🎉</h2>
+  <p>Preparando tu página de acceso…</p>
+</div>
+
+<footer>© 2025 Nuvem · Todos los derechos reservados</footer>
+
+<!-- Cal.com cargado via iframe directo -->
+<script>
+  const LANDING_URL = 'https://sesionnuvem.netlify.app/nuvem_landing.html';
+
+  // Cal.com embed emite un mensaje postMessage cuando se confirma un booking.
+  // Lo interceptamos aquí y redirigimos con los datos como parámetros URL.
+  window.addEventListener('message', function(e) {
+    // Cal.com envía eventos con esta estructura:
+    // { type: 'bookingSuccessful', data: { ... } }
+    // o también: { type: '__cal_bookingSuccessful', data: { ... } }
+    const payload = e.data;
+    if (!payload || typeof payload !== 'object') return;
+
+    const isBooking =
+      payload.type === 'bookingSuccessful' ||
+      payload.type === '__cal_bookingSuccessful' ||
+      (payload.action && payload.action === 'bookingSuccessful');
+
+    if (!isBooking) return;
+
+    // Mostrar overlay inmediatamente
+    document.getElementById('redirectOverlay').classList.add('active');
+
+    // Extraer datos del evento
+    const data = payload.data || payload || {};
+
+    const name      = data.attendees?.[0]?.name   || data.name        || data.attendeeName  || '';
+    const email     = data.attendees?.[0]?.email  || data.email       || data.attendeeEmail || '';
+    const startTime = data.startTime               || data.date        || '';
+    const location  = data.location?.value         || data.location   || '';
+    const eventName = data.eventType?.title        || data.eventTitle || data.title         || '';
+
+    // Construir URL con parámetros
+    const params = new URLSearchParams();
+    if (name)      params.set('name', name);
+    if (email)     params.set('email', email);
+    if (startTime) params.set('startTime', startTime);
+    if (location)  params.set('location', location);
+    if (eventName) params.set('eventName', eventName);
+
+    // Pequeña pausa para que vean el overlay antes de redirigir
+    setTimeout(function() {
+      const sep = LANDING_URL.includes('?') ? '&' : '?';
+      window.location.href = LANDING_URL + (params.toString() ? sep + params.toString() : '');
+    }, 1200);
+  });
+</script>
+
+</body>
+</html>
